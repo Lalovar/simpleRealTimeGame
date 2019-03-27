@@ -1,4 +1,6 @@
 import React from 'react';
+import setScenario from './Colision';
+import {Fields} from './Fields';
 
 export default class GameField extends React.Component {
     constructor(props) {
@@ -41,7 +43,7 @@ export default class GameField extends React.Component {
         
         this.clear(context);
         this.handleKeysEvent();
-        this.controlCollision();
+        this.controlCollision(context);
         this.drawObjects(context); 
     }
     
@@ -82,24 +84,24 @@ export default class GameField extends React.Component {
         this.setState({currentPlayer});
     }
     
-    controlCollision = () => {
-        const currentPlayer = this.state.currentPlayer;
+    controlCollision = (context) => {
+        let currentPlayer = this.state.currentPlayer;
+        //draw scenario and set collisions.
+        currentPlayer = setScenario(context, this.state.width, this.state.height, currentPlayer, Fields.beta1);
+        
         if(this.state.currentPlayer.x <= (this.state.width - this.state.width) ){
             currentPlayer.x = 1;
-            this.setState({currentPlayer});
         }
         if(this.state.currentPlayer.x >= (this.state.width-30) ){
             currentPlayer.x = this.state.width-30;
-            this.setState({currentPlayer});
         }
         if(this.state.currentPlayer.y <= (this.state.height - this.state.height) ){
             currentPlayer.y = 1;
-            this.setState({currentPlayer});
         }
         if(this.state.currentPlayer.y >= (this.state.height-30) ){
             currentPlayer.y = this.state.height-30;
-            this.setState({currentPlayer});
         }
+        this.setState({currentPlayer});
     }
     
   render() {
