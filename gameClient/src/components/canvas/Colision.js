@@ -4,7 +4,8 @@ export default function setScenario(
 context,
 gameSettings,
 currentPlayer,
-scenario)
+scenario,
+image)
 {
     currentPlayer.canMove = true;
     //create object
@@ -21,8 +22,7 @@ scenario)
             sprite.w = blockSize;
             sprite.h = blockSize;
             currentPlayer = colisionLogic(currentPlayer, sprite);
-            
-            paintRect(context, xPaint, yPaint, sprite.color, blockSize, blockSize);
+            paintRect(context, xPaint, yPaint, sprite.color, blockSize, blockSize, sprite.image);
         }
     }
     return currentPlayer;

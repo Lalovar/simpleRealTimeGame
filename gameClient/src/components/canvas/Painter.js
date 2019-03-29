@@ -1,4 +1,8 @@
-export default function paintRect(context, x, y, color='black', w, h){
-        context.fillStyle = color;
-        return context.fillRect(x, y, w, h);
+export default async function paintRect(context, x, y, color='black', w, h, image){
+        if(image !== undefined) {
+                context.drawImage(image, x, y, w, h);
+        }else{
+                context.fillStyle = color;
+                context.fillRect(x, y, w, h);
+        }
     }

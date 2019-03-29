@@ -2,22 +2,26 @@ import React from 'react';
 import setScenario from './Colision';
 import paintRect from './Painter';
 import {Fields} from './Fields';
+import loadResources from './../GetResources';
+import character1x32 from './../../assets/character1x32.png';
+import character2x32 from './../../assets/character2x32.png';
 
 export default class GameField extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             gameSettings : {
-                width: 768,
-                height: 432,
-                blockSize : 48
+                width: 512,
+                height: 288,
+                blockSize : 32,
             },
             currentPlayer : {
                 x : 0,
                 y : 120,
-                w : 48,
-                h : 48,
+                w : 32,
+                h : 32,
                 color : 'red',
+                image : loadResources(character1x32),
                 canMove: true
             },
             lastState : null,
@@ -33,11 +37,21 @@ export default class GameField extends React.Component {
     
     componentDidMount() {
         const context = this.refs.canvas.getContext('2d');
+        const newPlayer = {
+            x : 450,
+            y : 120,
+            w : 32,
+            h : 32,
+            image : loadResources(character2x32),
+        };
+        let players = [];
+        players.push(newPlayer);
+        this.setState({players});
         this.renderData(context);
     }
     
     renderData = (context) => {
-        const keys = this.state.keys;
+        let keys = this.state.keys;
         document.addEventListener("keydown", function (e) {
             keys[e.keyCode] = true;
         });
@@ -59,8 +73,12 @@ export default class GameField extends React.Component {
     }
     
     drawObjects = (context) => {
-        const {x, y, color, w ,h} = this.state.currentPlayer;
-        paintRect(context, x, y, color, w, h);
+        const {x, y, color, w ,h, image} = this.state.currentPlayer;
+        paintRect(context, x, y, color, w, h, image);
+        for(let i = 0; i < this.state.players.length; i++){
+            const {x, y, color, w ,h, image} = this.state.players[i];
+            paintRect(context, x, y, color, w, h, image);
+        }
     }
     
     handleKeysEvent = (event) => {
@@ -68,19 +86,19 @@ export default class GameField extends React.Component {
         const keys = this.state.keys;
         let speed = 1;
         if(currentPlayer.canMove){
-            if (keys[16]){
+            if (keys[32]){
                 speed = 3;
             }  
-            if (keys[37]) {
+            if (keys[37] || keys[65]) {
                 currentPlayer.x -= speed;
             }
-            if (keys[39]) {
+            if (keys[39]|| keys[68]) {
                 currentPlayer.x += speed;
             }
-            if (keys[40]) {
+            if (keys[40] || keys[83]) {
                 currentPlayer.y += speed;
             }
-            if (keys[38]) {
+            if (keys[38] || keys[87] ){
                 currentPlayer.y -= speed;
             }
             this.setState({currentPlayer});    
@@ -124,14 +142,14 @@ export default class GameField extends React.Component {
     
   render() {
       const {width, height} = this.state.gameSettings;
-    return (
-        <div>
-            <canvas ref="canvas" width={width} height={height} style={{border:'1px solid #000000'}} />
-            <br />
-            <button onClick={this.handleFullScreen}>Full screen</button>
-            <p>Use the 🡄 🡆 🡅 🡇 to move</p>
-            <p>Use <b><i>shift</i></b> to move faster</p>
-        </div>
-    );
-  }
+        return (
+            <div>
+                <canvas ref="canvas" width={width} height={height} style={{border:'1px solid #000000'}} />
+                <br />
+                <button onClick={this.handleFullScreen}>Full screen</button>
+                <p>Use the 🡄 🡆 🡅 🡇 or <b>WASD</b> to move</p>
+                <p>Use <b><i><code>space</code></i></b> to move faster</p>
+            </div>
+        );
+    }
 }
