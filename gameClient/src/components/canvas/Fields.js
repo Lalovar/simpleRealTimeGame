@@ -1,10 +1,25 @@
-const midCross = {
-    xPosition : 0.5,
-    xSize : 0.5,
-    yPosition : 0.5,
-    ySize : 0.5
+const f1 = {
+    image : './xxxx',
+    color : 'gray',
+    obstacle: false
+};
+
+const o1 = {
+    image : './xxxx',
+    color : 'black',
+    obstacle: true
 };
 
 export const Fields = {
-    beta1 : [midCross]
+    beta1 : [
+        [ f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1],
+        [ f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1],
+        [ f1, f1, f1, f1, f1, f1, o1, o1, o1, o1, f1, f1, f1, f1, f1, f1],
+        [ f1, f1, f1, f1, f1, f1, o1, f1, f1, o1, f1, f1, f1, f1, f1, f1],
+        [ f1, f1, f1, f1, f1, f1, o1, f1, f1, o1, f1, f1, f1, f1, f1, f1],
+        [ f1, f1, f1, f1, f1, f1, o1, f1, f1, o1, f1, f1, f1, f1, f1, f1],
+        [ f1, f1, f1, f1, f1, f1, o1, o1, o1, o1, f1, f1, f1, f1, f1, f1],
+        [ f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1],
+        [ f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1, f1],
+    ]
 };
