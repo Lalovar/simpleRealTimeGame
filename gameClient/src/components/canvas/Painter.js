@@ -1,4 +1,4 @@
-export default async function paintRect(context, x, y, color='black', w, h, image){
+export default function paintRect(context, x, y, color='black', w=32, h=32, image){
         if(image !== undefined) {
                 context.drawImage(image, x, y, w, h);
         }else{
