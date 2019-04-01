@@ -21,6 +21,8 @@ image)
             sprite.y = yPaint;
             sprite.w = blockSize;
             sprite.h = blockSize;
+            currentPlayer.h = blockSize;
+            currentPlayer.w = blockSize;
             currentPlayer = colisionLogic(currentPlayer, sprite);
             paintRect(context, xPaint, yPaint, sprite.color, blockSize, blockSize, sprite.image);
         }

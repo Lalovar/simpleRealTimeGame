@@ -3,6 +3,7 @@ import setScenario from './Colision';
 import paintRect from './Painter';
 import {Fields} from './Fields';
 import loadResources from './../GetResources';
+import socketIOClient from "socket.io-client";
 import character1x32 from './../../assets/character1x32.png';
 import character2x32 from './../../assets/character2x32.png';
 
@@ -18,11 +19,9 @@ export default class GameField extends React.Component {
             currentPlayer : {
                 x : 0,
                 y : 120,
-                w : 32,
-                h : 32,
-                color : 'red',
                 image : loadResources(character1x32),
-                canMove: true
+                canMove: true,
+                id : undefined
             },
             lastState : null,
             players : [],
@@ -35,18 +34,24 @@ export default class GameField extends React.Component {
         };
     }
     
+    // The URL to point the server.
+    URL = "https://practice-lalovar.c9users.io";
+    // The socket instance.
+    socket = socketIOClient(this.URL);
+    
     componentDidMount() {
-        const context = this.refs.canvas.getContext('2d');
-        const newPlayer = {
-            x : 450,
-            y : 120,
-            w : 32,
-            h : 32,
-            image : loadResources(character2x32),
-        };
+        //send the ssss
+        this.socket.emit('setId', this.state.currentPlayer); 
+        this.socket.on('setId', (currentPlayer) => {
+            const { id } = currentPlayer;
+            
+        });
         let players = [];
         players.push(newPlayer);
         this.setState({players});
+        // Get context of canvas
+        const context = this.refs.canvas.getContext('2d');
+        // Render data method
         this.renderData(context);
     }
     
@@ -74,10 +79,10 @@ export default class GameField extends React.Component {
     
     drawObjects = (context) => {
         const {x, y, color, w ,h, image} = this.state.currentPlayer;
-        paintRect(context, x, y, color, w, h, image);
+        paintRect(context, x, y, undefined, undefined, undefined, image);
         for(let i = 0; i < this.state.players.length; i++){
-            const {x, y, color, w ,h, image} = this.state.players[i];
-            paintRect(context, x, y, color, w, h, image);
+            const {x, y} = this.state.players[i];
+            paintRect(context, x, y, undefined, undefined, undefined, undefined);
         }
     }
     
